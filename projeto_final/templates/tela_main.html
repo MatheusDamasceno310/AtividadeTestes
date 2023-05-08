@@ -17,7 +17,7 @@
               <a href="#topo">GameZone</a>
           </div>
           <div id="mainListDiv" class="main_list">
-              <ul class="navlinks">
+            <ul class="navlinks">
                 {% if current_user.usuario == 'admsupremo' %}
                     <li><a href="#" id="conta-link2">ADM</a></li>
 
@@ -52,14 +52,12 @@
     <div class="modal" id="conta-modal2">
         <div class="modal-content">
             <!-- Conteúdo da janela da conta -->
-            <h2>ADM</h2>
+            <h2>Adm</h2>
             <a class="modal-close" href="{{ url_for('cadastrar_jogos') }}">Cadastrar Jogos</a>
             <a class="modal-close" href="{{ url_for('usuarios') }}">Deletar Contas</a>
-            <a class="modal-close" href="{{ url_for('logout') }}">Deslogar</a>
             <a class="modal-close">Fechar</a>
         </div>
     </div>
-
 
   {% endif %}
 
@@ -92,40 +90,39 @@
         <li class="list" data-filter = "console">Console</li>
       </ul>
       <div class="cardBx">
-          {% for jogo in listaJogos %}
-          {% if jogo.plataforma == 'PC' %}
-            <div class="card" data-item="pc">
-              <img src={{ jogo.capaJogo }}>
-              <div class="content">
-                <h4>{{ jogo.nomeJogo }}</h4>
-                <div class="progress-line"><span></span></div>
-                <div class="info">
-                  <p>Preço<br><span>R$ {{ jogo.preco }}</span></p>
-                    <form action="{{ url_for('comprar_jogo', id=jogo.idCadJg) }}" method="POST">
+        {% for jogo in listaJogos %}
+            {% if jogo.plataforma == 'PC' %}
+                <div class="card" data-item="pc">
+                  <img src={{ jogo.capaJogo }}>
+                  <div class="content">
+                    <h4>{{ jogo.nomeJogo }}</h4>
+                    <div class="progress-line"><span></span></div>
+                    <div class="info">
+                      <p>Preço<br><span>R$ {{ jogo.preco }}</span></p>
+                        <form action="{{ url_for('comprar_jogo', id=jogo.idCadJg) }}" method="POST">
+                            <button type="submit">Comprar</button>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+
+            {% else %}
+                <div class="card" data-item="console">
+                  <img src={{ jogo.capaJogo }}>
+                  <div class="content">
+                    <h4>{{ jogo.nomeJogo }}</h4>
+                    <div class="progress-line"><span></span></div>
+                    <div class="info">
+                      <p>Preço<br><span>R$ {{ jogo.preco }}</span></p>
+                      <form action="{{ url_for('comprar_jogo', id=jogo.idCadJg) }}" method="POST">
                         <button type="submit">Comprar</button>
                     </form>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-          {% else %}
-            <div class="card" data-item="console">
-              <img src={{ jogo.capaJogo }}>
-              <div class="content">
-                <h4>{{ jogo.nomeJogo }}</h4>
-                <div class="progress-line"><span></span></div>
-                <div class="info">
-                  <p>Preço<br><span>R$ {{ jogo.preco }}</span></p>
-                  <form action="{{ url_for('comprar_jogo', id=jogo.idCadJg) }}" method="POST">
-                    <button type="submit">Comprar</button>
-                </form>
-                </div>
-              </div>
-            </div>
-
-          {% endif %}
+            {% endif %}
         {% endfor %}
-      </div>
 
 
 <!--Contato-->
@@ -174,9 +171,6 @@
 
     </div>
   </footer>
-
-
-
 
 <!-- Jquery needed -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -290,10 +284,6 @@ carrinhoLink.addEventListener("click", function(e) {
 const contaLink = document.getElementById("conta-link");
 const contaModal = document.getElementById("conta-modal");
 
-// Seleciona o link2 da conta e a mini janela da conta
-const contaLink2 = document.getElementById("conta-link2");
-const contaModal2 = document.getElementById("conta-modal2");
-
 // Adiciona um ouvinte de eventos ao link da conta
 contaLink.addEventListener("click", function(e) {
     // Impede que o link funcione como um link normal
@@ -302,6 +292,23 @@ contaLink.addEventListener("click", function(e) {
     // Exibe a mini janela da conta
     contaModal.style.display = "block";
 });
+
+{% if current_user.usuario == 'admsupremo' %}
+
+    // Seleciona o link2 da conta e a mini janela da conta
+    const contaLink2 = document.getElementById("conta-link2");
+    const contaModal2 = document.getElementById("conta-modal2");
+
+    // Adiciona um ouvinte de eventos ao link2 da conta
+    contaLink2.addEventListener("click", function(e) {
+        // Impede que o link funcione como um link normal
+        e.preventDefault();
+
+        // Exibe a mini janela da conta2
+        contaModal2.style.display = "block";
+    });
+
+{% endif %}
 
 // Seleciona todos os botões "Fechar"
 const closeButton = document.querySelectorAll(".modal-close");
@@ -356,5 +363,13 @@ const removerDiv = () => {
 
 // Define o atraso de 5 segundos e chama a função de remover a div
 setTimeout(removerDiv, 5000);
+
+$('.navTrigger').click(function () {
+    $(this).toggleClass('active');
+    console.log("Clicked menu");
+    $("#mainListDiv").toggleClass("show_list");
+    $("#mainListDiv").fadeIn();
+
+});
 
 </script>

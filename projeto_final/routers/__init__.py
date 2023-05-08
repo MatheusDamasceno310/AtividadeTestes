@@ -13,7 +13,7 @@ def login():
     formLogin = FormLogin()
     if formLogin.validate_on_submit():
             user = Conta.query.filter_by(usuario=formLogin.usuario.data).first()
-            if formLogin.usuario.data == usuario and formLogin.senha.data == senha:
+            if user and formLogin.usuario.data == usuario and formLogin.senha.data == senha:
                 login_user(user)
                 return redirect(url_for('gamezone'))
 

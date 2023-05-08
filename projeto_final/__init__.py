@@ -11,7 +11,7 @@ banco = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
-login_manager.login_message_category = 'alerta'
+login_manager.login_message_category = 'falha'
 login_manager.login_message = 'Faça um login para poder acessar a página'
 
 from projeto_final import routers
