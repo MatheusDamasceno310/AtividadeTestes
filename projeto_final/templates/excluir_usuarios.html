@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/excluir_usuario.css') }}">
+<link rel="shortcut icon" href="{{ url_for('static', filename='imagens/controle.png') }}" type="image/x-icon">
+
+<head>
+	<title>ADM GameZone</title>
+</head>
+<body>
+
+    <div class="listaUsuarios">
+        <h1>Lista de Usuários</h1>
+        <ul>
+        {% for usuario in usuarios %}
+            {% if usuario.usuario != 'admsupremo' and usuario.senha != 'senhafraca' %}
+                <li class="lista">
+                    {{ usuario.usuario }} - {{ usuario.email }}
+                    <form action="{{ url_for('excluir_usuario', id=usuario.id) }}" method="POST">
+                        <button class="btnExcluir" type="submit">Excluir</button>
+                    </form>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+    </div>
+
+</body>
+</html>

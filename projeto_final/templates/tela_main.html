@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<title>GameZone</title>
+</head>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/tela_main.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='imagens/controle.png') }}" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.0.7/css/boxicons.min.css">
+
+<body>
+  <section class="topo" id="topo">
+    <nav class="nav">
+      <div class="container">
+          <div class="logo">
+              <a href="#topo">GameZone</a>
+          </div>
+          <div id="mainListDiv" class="main_list">
+              <ul class="navlinks">
+                {% if current_user.usuario == 'admsupremo' %}
+                    <li><a href="#" id="conta-link2">ADM</a></li>
+
+                {% endif %}
+
+                  <li><a href="#" id="carrinho-link">Carrinho</a></li>
+                  <li><a href="#" id="conta-link">Conta</a></li>
+                  <li><a href="#games">Jogos</a></li>
+                  <li><a onclick="toggleDarkMode()"><img id="icon"src="{{ url_for('static', filename='imagens/claro.png') }}" alt="Ícone de alternar entre modos claro e escuro"></a></li>
+              </ul>
+          </div>
+          <span class="navTrigger">
+              <i></i>
+              <i></i>
+              <i></i>
+          </span>
+      </div>
+  </nav>
+
+  <!-- Mini janela para o carrinho -->
+  <div class="modal" id="carrinho-modal">
+      <div class="modal-content">
+          <!-- Conteúdo da janela do carrinho -->
+          <h2>Carrinho</h2>
+          <p>Seus jogos selecionados aparecem aqui.</p>
+          <button class="modal-close">Fechar</button>
+      </div>
+  </div>
+
+  {% if current_user.usuario == 'admsupremo' %}
+    <!-- Mini janela para a conta -->
+    <div class="modal" id="conta-modal2">
+        <div class="modal-content">
+            <!-- Conteúdo da janela da conta -->
+            <h2>ADM</h2>
+            <a class="modal-close" href="{{ url_for('cadastrar_jogos') }}">Cadastrar Jogos</a>
+            <a class="modal-close" href="{{ url_for('usuarios') }}">Deletar Contas</a>
+            <a class="modal-close" href="{{ url_for('logout') }}">Deslogar</a>
+            <a class="modal-close">Fechar</a>
+        </div>
+    </div>
+
+
+  {% endif %}
+
+  <!-- Mini janela para a conta -->
+  <div class="modal" id="conta-modal">
+      <div class="modal-content">
+          <!-- Conteúdo da janela da conta -->
+          <h2>Conta</h2>
+          <a class="modal-close" href="{{ url_for('logout') }}">Deslogar</a>
+          <a class="modal-close">Fechar</a>
+      </div>
+  </div>
+  </section>
+
+
+
+    <section class="home">
+    </section>
+    <div style="height: 1000px">
+        <!-- just to make scrolling effect possible -->
+			<h2 class="myH2 digitacao">Um refúgio para gamers</h2>
+
+
+<!--JOGOS-->
+    <div class="games animated-div" id="games" >
+      <h2>Populares</h2>
+      <ul>
+        <li class="list active" data-filter= "all">Todos</li>
+        <li class="list" data-filter = "pc">PC</li>
+        <li class="list" data-filter = "console">Console</li>
+      </ul>
+      <div class="cardBx">
+          {% for jogo in listaJogos %}
+          {% if jogo.plataforma == 'PC' %}
+            <div class="card" data-item="pc">
+              <img src={{ jogo.capaJogo }}>
+              <div class="content">
+                <h4>{{ jogo.nomeJogo }}</h4>
+                <div class="progress-line"><span></span></div>
+                <div class="info">
+                  <p>Preço<br><span>R$ {{ jogo.preco }}</span></p>
+                    <form action="{{ url_for('comprar_jogo', id=jogo.idCadJg) }}" method="POST">
+                        <button type="submit">Comprar</button>
+                    </form>
+                </div>
+              </div>
+            </div>
+
+          {% else %}
+            <div class="card" data-item="console">
+              <img src={{ jogo.capaJogo }}>
+              <div class="content">
+                <h4>{{ jogo.nomeJogo }}</h4>
+                <div class="progress-line"><span></span></div>
+                <div class="info">
+                  <p>Preço<br><span>R$ {{ jogo.preco }}</span></p>
+                  <form action="{{ url_for('comprar_jogo', id=jogo.idCadJg) }}" method="POST">
+                    <button type="submit">Comprar</button>
+                </form>
+                </div>
+              </div>
+            </div>
+
+          {% endif %}
+        {% endfor %}
+      </div>
+
+
+<!--Contato-->
+
+<div class="contact animated-div2">
+  <img src="{{ url_for('static', filename='imagens/news-2.jpg') }}">
+  <form class="form" method="POST">
+
+    {{ formRecado.csrf_token }}
+
+    {% include 'mensagem.html' %}
+
+    <h1>Fale Conosco</h1>
+    <div class="inputBx">
+      <p>Digite seu nome</p>
+      {{ formRecado.nomeCompleto(placeholder="Nome Completo") }}
+    </div>
+    <div class="inputBx">
+      <p>Digite seu E-mail</p>
+      {{ formRecado.emailRecado(placeholder="E-mail") }}
+    </div>
+    <div class="inputBx">
+      <p>Menssagem</p>
+      {{ formRecado.menssagem(class="textMsg" ,placeholder="Escreva Aqui....") }}
+    </div>
+    <div class="inputBx">
+      {{ formRecado.btn_mandar_recado }}
+    </div>
+  </form>
+
+</div>
+
+
+  <!--FOOTER-->
+  <footer>
+    <div class="info">
+      <a href="#" class="logo2">GameZone</a>
+      <p><i class='bx bx-copyright'></i>2023 Todoss Direitos Reservados</p>
+      <ul>
+        <li><a href="#"><i class='bx bxl-instagram' ></i></a></li>
+        <li><a href="#"><i class='bx bxl-whatsapp' ></i></a></li>
+        <li><a href="#"><i class='bx bxl-linkedin' ></i></a></li>
+        <li><a href="#"><i class='bx bxl-twitter' ></i></a></li>
+
+      </ul>
+
+    </div>
+  </footer>
+
+
+
+
+<!-- Jquery needed -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Function used to shrink nav bar removing paddings and adding black background -->
+    <script>
+        $(window).scroll(function() {
+            if ($(document).scrollTop() > 50) {
+                $('.nav').addClass('affix');
+                console.log("OK");
+            } else {
+                $('.nav').removeClass('affix');
+            }
+        });
+    </script>
+<script>
+
+// Recupera o modo atual do armazenamento local, se disponível
+const isDarkMode = localStorage.getItem("isDarkMode");
+
+// Verifica se o modo escuro está habilitado no armazenamento local
+if (isDarkMode === "true") {
+  document.documentElement.classList.add("dark-mode");
+}
+
+// Recupera o ícone atual do armazenamento local, se disponível
+const currentIcon = localStorage.getItem("currentIcon");
+
+// Define o ícone padrão como o ícone claro
+let iconSrc = "{{ url_for('static', filename='imagens/claro.png') }}";
+
+// Verifica se o ícone escuro está selecionado no armazenamento local
+if (currentIcon === "dark") {
+  iconSrc = "{{ url_for('static', filename='imagens/claro.png') }}";
+}
+
+// Define o ícone no HTML
+const icon = document.getElementById("icon");
+icon.setAttribute("src", iconSrc);
+
+function toggleDarkMode() {
+  const html = document.documentElement;
+  html.classList.toggle("dark-mode");
+
+  // Salva o modo atual no armazenamento local
+  const isDarkMode = html.classList.contains("dark-mode");
+  localStorage.setItem("isDarkMode", isDarkMode);
+
+  // Salva o ícone atual no armazenamento local
+  let currentIcon = "light";
+  if (html.classList.contains("dark-mode")) {
+    currentIcon = "dark";
+  }
+  localStorage.setItem("currentIcon", currentIcon);
+
+  // Alterna entre os ícones com animação
+  icon.classList.toggle("animate-icon");
+  setTimeout(() => {
+    if (icon.getAttribute("src") === "{{ url_for('static', filename='imagens/modo-escuro.png') }}") {
+      icon.setAttribute("src", "{{ url_for('static', filename='imagens/claro.png') }}");
+    } else {
+      icon.setAttribute("src", "{{ url_for('static', filename='imagens/modo-escuro.png') }}");
+    }
+    icon.classList.toggle("animate-icon");
+  }, 300);
+}
+
+
+//* Filtrar Jogos//
+
+let list = document.querySelectorAll('.list');
+let card = document.querySelectorAll('.card');
+
+for (let i = 0; i<list.length; i++){
+  list[i].addEventListener('click', function(){
+    for(let j=0; j<list.length; j++){
+      list[j].classList.remove('active');
+    }
+    this.classList.add('active');
+
+    let dataFilter = this.getAttribute('data-filter');
+
+    for( let k=0; k<card.length; k++)
+    {
+      card[k].classList.remove('active');
+      card[k].classList.add('hide');
+
+      if(card[k].getAttribute('data-item') == dataFilter || dataFilter == 'all'){
+        card[k].classList.remove('hide');
+        card[k].classList.add('active');
+      }
+    }
+  })
+}
+
+
+// Seleciona o link do carrinho e a mini janela do carrinho
+const carrinhoLink = document.getElementById("carrinho-link");
+const carrinhoModal = document.getElementById("carrinho-modal");
+
+// Adiciona um ouvinte de eventos ao link do carrinho
+carrinhoLink.addEventListener("click", function(e) {
+    // Impede que o link funcione como um link normal
+    e.preventDefault();
+
+    // Exibe a mini janela do carrinho
+    carrinhoModal.style.display = "block";
+});
+
+// Seleciona o link da conta e a mini janela da conta
+const contaLink = document.getElementById("conta-link");
+const contaModal = document.getElementById("conta-modal");
+
+// Seleciona o link2 da conta e a mini janela da conta
+const contaLink2 = document.getElementById("conta-link2");
+const contaModal2 = document.getElementById("conta-modal2");
+
+// Adiciona um ouvinte de eventos ao link da conta
+contaLink.addEventListener("click", function(e) {
+    // Impede que o link funcione como um link normal
+    e.preventDefault();
+
+    // Exibe a mini janela da conta
+    contaModal.style.display = "block";
+});
+
+// Seleciona todos os botões "Fechar"
+const closeButton = document.querySelectorAll(".modal-close");
+
+// Adiciona um ouvinte de eventos a cada botão "Fechar"
+closeButton.forEach(function(button) {
+    button.addEventListener("click", function() {
+        // Oculta a mini janela
+        this.parentNode.parentNode.style.display = "none";
+    });
+});
+
+//Scroll automatico//
+    document.querySelector('a[href="#games"]').addEventListener('click', function(e) {
+        e.preventDefault(); // evita o comportamento padrão do link
+        document.querySelector('#games').scrollIntoView({ behavior: 'smooth' });
+    });
+
+
+    document.querySelector('a[href="#topo"]').addEventListener('click', function(e) {
+        e.preventDefault(); // evita o comportamento padrão do link
+        document.querySelector('#topo').scrollIntoView({ behavior: 'smooth' });
+    });
+
+
+    // Adiciona a classe "animate" quando a div estiver visível
+window.addEventListener("scroll", function() {
+  var animatedDiv = document.querySelector(".animated-div");
+  var position = animatedDiv.getBoundingClientRect();
+
+  if (position.top < window.innerHeight && position.bottom >= 0) {
+    animatedDiv.classList.add("animate");
+  }
+});
+
+window.addEventListener("scroll", function() {
+  var animatedDiv = document.querySelector(".animated-div2");
+  var position = animatedDiv.getBoundingClientRect();
+
+  if (position.top < window.innerHeight && position.bottom >= 0) {
+    animatedDiv.classList.add("animate");
+  }
+});
+
+// Seleciona o elemento da div
+const divMensagens = document.querySelector('.contMsg');
+
+// Define a função para remover a div após 5 segundos
+const removerDiv = () => {
+    divMensagens.remove();
+}
+
+// Define o atraso de 5 segundos e chama a função de remover a div
+setTimeout(removerDiv, 5000);
+
+</script>

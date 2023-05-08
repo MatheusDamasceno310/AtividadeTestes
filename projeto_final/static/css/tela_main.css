@@ -1,0 +1,902 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+html{
+
+    background-image: url("/static/imagens/body-bg2.jpg");
+    transition: background-image 0.3s ease-in-out, color 0.3s ease-in-out;
+    font-family: "Quicksand", sans-serif;
+    font-size: 62.5%;
+    font-size: 10px;
+}
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Quicksand", sans-serif;
+    font-size: 62.5%;
+    font-size: 10px;
+    min-height: 100vh;
+
+
+
+}
+
+.dark-mode {
+	background-image: url("/static/imagens/body-bg.jpg");
+	color: white;
+    
+}
+/*-- Inspiration taken from abdo steif -->
+/* --> https://codepen.io/abdosteif/pen/bRoyMb?editors=1100*/
+
+/* Navbar section */
+
+.nav {
+    width: 100%;
+    height: 65px;
+    position: fixed;
+    line-height: 65px;
+    text-align: center;
+    z-index: 100;
+}
+
+.nav div.logo {
+    float: left;
+    width: auto;
+    height: auto;
+    padding-left: 3rem;
+}
+
+.nav div.logo a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 2.5rem;
+}
+
+.nav div.logo a:hover {
+    color: #00aeff;
+}
+
+.nav div.main_list {
+    height: 65px;
+    float: right;
+}
+
+.nav div.main_list ul {
+    width: 100%;
+    height: 65px;
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav div.main_list ul li {
+    width: auto;
+    height: 65px;
+    padding: 0;
+    padding-right: 3rem;
+}
+
+.nav div.main_list ul li a {
+    text-decoration: none;
+    color: #fff;
+    line-height: 65px;
+    font-size: 2.4rem;
+}
+
+.nav div.main_list ul li a:hover {
+    color: #00aeff;
+}
+
+
+/* Home section */
+
+.home {
+    width: 100%;
+    height: 100vh;
+    background-image: url(https://marketplace.canva.com/EAE-rfspHQM/1/0/1600w/canva-blue-and-purple-cyberpunk-game-zone-desktop-background-QUVVB5lzUWo.jpg);
+    background-position: center top;
+	background-size:cover;
+}
+
+.navTrigger {
+    display: none;
+}
+
+.nav {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+
+
+/* Media qurey section */
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .container {
+        margin: 0;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .navTrigger {
+        display: block;
+    }
+    .nav div.logo {
+        margin-left: 15px;
+    }
+    .nav div.main_list {
+        width: 100%;
+        height: 0;
+        overflow: hidden;
+    }
+    .nav div.show_list {
+        height: auto;
+        display: none;
+    }
+    .nav div.main_list ul {
+        flex-direction: column;
+        width: 100%;
+        height: 40vh;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background-color: #111111;
+        /*same background color of navbar*/
+        background-position: center top;
+    }
+    .nav div.main_list ul li {
+        width: 100%;
+        text-align: right;
+    }
+    .nav div.main_list ul li a {
+        text-align: center;
+        width: 100%;
+        font-size: 3rem;
+        padding: 20px;
+    }
+    .nav div.media_button {
+        display: block;
+    }
+}
+
+
+/* Animation */
+/* Inspiration taken from Dicson https://codemyui.com/simple-hamburger-menu-x-mark-animation/ */
+
+.navTrigger {
+    cursor: pointer;
+    width: 30px;
+    height: 25px;
+    margin: auto;
+    position: absolute;
+    right: 30px;
+    top: 0;
+    bottom: 0;
+}
+
+.navTrigger i {
+    background-color: #fff;
+    border-radius: 2px;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 4px;
+}
+
+.navTrigger i:nth-child(1) {
+    -webkit-animation: outT 0.8s backwards;
+    animation: outT 0.8s backwards;
+    -webkit-animation-direction: reverse;
+    animation-direction: reverse;
+}
+
+.navTrigger i:nth-child(2) {
+    margin: 5px 0;
+    -webkit-animation: outM 0.8s backwards;
+    animation: outM 0.8s backwards;
+    -webkit-animation-direction: reverse;
+    animation-direction: reverse;
+}
+
+.navTrigger i:nth-child(3) {
+    -webkit-animation: outBtm 0.8s backwards;
+    animation: outBtm 0.8s backwards;
+    -webkit-animation-direction: reverse;
+    animation-direction: reverse;
+}
+
+.navTrigger.active i:nth-child(1) {
+    -webkit-animation: inT 0.8s forwards;
+    animation: inT 0.8s forwards;
+}
+
+.navTrigger.active i:nth-child(2) {
+    -webkit-animation: inM 0.8s forwards;
+    animation: inM 0.8s forwards;
+}
+
+.navTrigger.active i:nth-child(3) {
+    -webkit-animation: inBtm 0.8s forwards;
+    animation: inBtm 0.8s forwards;
+}
+
+@-webkit-keyframes inM {
+    50% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(45deg);
+    }
+}
+
+@keyframes inM {
+    50% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(45deg);
+    }
+}
+
+@-webkit-keyframes outM {
+    50% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(45deg);
+    }
+}
+
+@keyframes outM {
+    50% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(45deg);
+    }
+}
+
+@-webkit-keyframes inT {
+    0% {
+        -webkit-transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        -webkit-transform: translateY(9px) rotate(0deg);
+    }
+    100% {
+        -webkit-transform: translateY(9px) rotate(135deg);
+    }
+}
+
+@keyframes inT {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(9px) rotate(0deg);
+    }
+    100% {
+        transform: translateY(9px) rotate(135deg);
+    }
+}
+
+@-webkit-keyframes outT {
+    0% {
+        -webkit-transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        -webkit-transform: translateY(9px) rotate(0deg);
+    }
+    100% {
+        -webkit-transform: translateY(9px) rotate(135deg);
+    }
+}
+
+@keyframes outT {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(9px) rotate(0deg);
+    }
+    100% {
+        transform: translateY(9px) rotate(135deg);
+    }
+}
+
+@-webkit-keyframes inBtm {
+    0% {
+        -webkit-transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        -webkit-transform: translateY(-9px) rotate(0deg);
+    }
+    100% {
+        -webkit-transform: translateY(-9px) rotate(135deg);
+    }
+}
+
+@keyframes inBtm {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-9px) rotate(0deg);
+    }
+    100% {
+        transform: translateY(-9px) rotate(135deg);
+    }
+}
+
+@-webkit-keyframes outBtm {
+    0% {
+        -webkit-transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        -webkit-transform: translateY(-9px) rotate(0deg);
+    }
+    100% {
+        -webkit-transform: translateY(-9px) rotate(135deg);
+    }
+}
+
+@keyframes outBtm {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-9px) rotate(0deg);
+    }
+    100% {
+        transform: translateY(-9px) rotate(135deg);
+    }
+}
+
+.affix {
+    padding: 0;
+    background-color: #111;
+}
+
+
+
+
+
+
+.myH2 {
+	text-align:center;
+	font-size: 4rem;
+}
+.myP {
+	text-align: justify;
+	padding-left:15%;
+	padding-right:15%;
+	font-size: 20px;
+}
+@media all and (max-width:700px){
+	.myP {
+		padding:2%;
+	}
+}
+
+
+
+img{
+margin-top: 10px;
+width: 40px; /* ajuste de acordo com o tamanho da imagem */
+height: 40px; /* ajuste de acordo com o tamanho da imagem */
+transition: transform 0.3s ease-in-out;
+}
+  
+a:hover img{
+	transform: scale(1.1);
+}
+
+
+.digitacao {
+    overflow: hidden;
+    border-right: .15em solid rgb(162, 0, 255); /* efeito do cursor digitando */
+    white-space: nowrap; /* evita quebra de linha */
+    margin: 0 auto; /* centraliza o texto */
+    letter-spacing: .15em; /* define o espaçamento entre as letras */
+    animation: digitando 4.5s steps(40, end) infinite, piscando .75s infinite;
+  }
+  
+  @keyframes digitando {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  @keyframes piscando {
+    from, to { border-color: transparent }
+    50% { border-color: rgb(162, 0, 255) }
+  }
+
+  
+/*JOGOS*/
+.games{
+    
+    width: 100%;
+    min-height: 100hv;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 40px auto;
+
+}
+  
+.games h2{
+    margin: 10px 0;
+    font-size: 20px;
+}
+  
+
+.games li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.games ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+.games ul li{
+    list-style: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 5px;
+    letter-spacing: 1px;
+    cursor: pointer;
+
+}
+
+
+.games ul li.active{
+    background: #00aeff;
+    color: #171733;
+    box-shadow: 0 0 10px #00aeff;
+}
+
+.games .cardBx{
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+
+.games .cardBx .card{
+width: 280px;
+border-radius: 10px;
+margin: 20px 40px;
+background-color: #05044b;
+overflow: hidden;
+}
+
+.games .cardBx .card img{
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.games .cardBx .card .content{
+    padding: 10px;
+}
+
+
+.games .cardBx .card .content h4{
+    margin: 15px 0;
+    color: #fff;
+}
+
+.games .cardBx .card .progress-line{
+    position: relative;
+    height: 10px;
+    width: 100%;
+    background: #35047e;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: animate 1s cubic-bezier(1,0,0.5,1) forwards;
+
+}
+
+.games .cardBx .card .progress-line span{
+    position: absolute;
+    height: 100%;
+    width: 80%;
+    border-radius: 10px;
+    background: #00aeff;
+    box-shadow: 0 0 10px #00aeff;
+    transform:scaleX(0);
+    transform-origin: left;
+    animation: animate 1s cubic-bezier(1,0,0.5,1) forwards;
+}
+
+@keyframes animate{
+    100%{
+        transform: scaleX(1);
+    }
+}
+
+
+.games .cardBx .card .info{
+    border-top: 2px solid #35047e;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+
+}
+
+.games .cardBx .card .info p{
+    font-size: 1em;
+    color: #fff;
+}
+
+.games .cardBx .card .info p span{
+    color: #00aeff;
+}
+
+
+.games .cardBx .card .info button{
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 20px 0;
+    border: 1px solid #00aeff;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 5px;
+    color: #fff;
+    letter-spacing: 1px;
+    font-size: 12px;
+    background: none;
+    cursor: pointer;
+}
+
+
+.games .cardBx .card .info button:hover{
+    background: #00aeff;
+    border: none;
+    color: #171733;
+    box-shadow: 0 0 10px #00aeff;
+    transition: background-color 0.3s ease-in-out
+}
+
+.games .cardBx .card .info p{
+    font-size: 15px;
+}
+
+
+.games .cardBx .card  h4{
+font-size: 17px;
+}
+
+.games .cardBx .card.hide{
+    display: none;
+    
+    
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    align-items: center;
+  }
+  
+  .modal-content {
+    background-color: #171733;
+    margin: 15% auto;
+    padding: 20px;
+    border: none;
+    width: 90%;
+    max-width: 650px;
+    position: relative;
+    color: #fff;
+    
+  }
+  
+  .modal-content .tab {
+    display: none;
+  }
+  
+  .modal-content .tab.active {
+    display: block;
+  }
+  
+  .tab-links {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .tab-links a {
+    text-decoration: none;
+    color: #000;
+    padding: 10px;
+    border-bottom: 2px solid transparent;
+  }
+  
+  .tab-links a:hover {
+    border-bottom: 2px solid #000;
+  }
+  
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #888888;
+    cursor: pointer;
+   
+    
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .modal-content {
+      width: 90%;
+      margin: 10% auto;
+    }
+  }
+  
+
+
+.modal-close{
+    background-color: #6c2dfd;
+    color: #fff;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 30%;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.modal-close:hover{
+    background-color: #00aeff;
+    transition: background-color 0.3s ease-in-out
+}
+
+
+
+/*contato*/
+
+.contact{
+    padding: 20px 100px;
+    width: 100%;
+    min-height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact h1{
+    font-size: 30px;
+}
+
+.contact p{
+    font-size: 15px;
+
+}
+
+.contact img{
+    height: 100%;
+    width: 50%;
+    object-fit: cover;
+    border-radius: 10px;
+
+}
+
+.contact .form{
+    width: 50%;
+    margin: 30px;
+}
+
+.contact .form .inputBx{
+    margin: 10px 0;
+}
+
+.contact .form .inputBx input,
+.contact .form .inputBx .textMsg{
+    border: none;
+    outline: none;
+    padding: 10px;
+    width: 100%;
+    background: #05044b;
+    min-height: 15px;
+    font-size: 1.2em;
+    color:#fff
+}
+
+.contact .form .inputBx .textMsg{
+    height: 150px;
+}
+
+.contact .form .inputBx input[type="submit"]{
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 15px 0;
+    outline: none;
+    background: #05044b;
+    border: 1px solid #00aeff;
+    text-decoration: none;
+    font-weight: 700;
+    width: 150px;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    color: #fff;
+
+}
+
+
+.contact .form .inputBx input[type="submit"]:hover{
+    background: #00aeff;
+    border:none;
+    color: #171733;
+    box-shadow: 0 0 10px;
+    transition: background 0.3s ease-in-out
+}
+
+
+.animated-div {
+    opacity: 0; /* Define a div como invisível */
+    transform: translateX(-100%); /* Move a div para fora da tela */
+    transition: opacity 0.9s ease-out, transform 0.9s ease-out; /* Define a transição */
+  }
+  
+  .animated-div.animate {
+    opacity: 1; /* Define a div como visível */
+    transform: translateX(0); /* Move a div para dentro da tela */
+  }
+  
+  /* Defina sua animação personalizada aqui */
+  @keyframes slide-in {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+
+  .animated-div2 {
+    opacity: 0; /* Define a div como invisível */
+    transform: translateX(-100%); /* Move a div para fora da tela */
+    transition: opacity 0.9s ease-out, transform 0.9s ease-out; /* Define a transição */
+  }
+  
+  .animated-div2.animate {
+    opacity: 1; /* Define a div como visível */
+    transform: translateX(0); /* Move a div para dentro da tela */
+  }
+  
+  /* Defina sua animação personalizada aqui */
+  @keyframes slide-in {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+
+
+
+  /*FOOTER*/
+
+  footer{
+    padding: 10px 100px;
+
+  }
+
+  footer .info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer .info .logo2{
+    position: relative;
+    text-decoration: none;
+    font-size: 2em;
+    font-weight: 700;
+    color: #fff;
+  }
+
+
+  footer .info p{
+color: #fff;
+  }
+
+  footer .info ul{
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }
+
+ footer .info ul li{
+    list-style: none;
+    height: 20px;
+    width: 20px;
+    margin: 5px;
+    border-radius: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #00aeff;
+ }
+
+ footer .info ul li:hover{
+    background: #00aeff;
+    border:none;
+    box-shadow: 0 0 10px #00aeff;
+    transition: background-color 0.3s ease-in-out
+ }
+
+
+ footer .info ul li a i{
+    font-size: 1.5em;
+    color: #fff;
+    
+ }
+
+ footer .info ul li a i:hover{
+    background: #00aeff;
+ }
+
+ .sucesso {
+    background: rgba(0, 199, 0, 0.681);
+    border: 2px solid rgb(0, 136, 0);
+    padding: 5px;
+    border-radius: 6px;
+}
+
+.falha {
+    background: rgba(199, 0, 0, 0.681);
+    border: 2px solid rgb(136, 0, 0);
+    padding: 5px;
+    border-radius: 6px;
+}
+
+.alerta {
+    background: rgba(255, 136, 0, 0.681);
+    border: 2px solid rgb(255, 136, 0);
+    padding: 5px;
+    border-radius: 6px;
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cadastro_jogos.css') }}">
+  	<link rel="shortcut icon" href="{{ url_for('static', filename='imagens/controle.png') }}" type="image/x-icon">
+
+<head>
+	<title>Cadastro de Jogos</title>
+</head>
+<body>
+
+	<form method="POST">
+		{{ formCadJg.csrf_token }}
+
+		{% include 'mensagem.html' %}
+
+		<h1>Cadastro de Jogos</h1>
+		{{ formCadJg.capaJogo.label }}
+		{{ formCadJg.capaJogo(placeholder="Foto tem que ta na pasta imagens") }}
+    	{{ formCadJg.nomeJogo.label }}
+		{{ formCadJg.nomeJogo }}
+		{{ formCadJg.plataforma.label }}
+		{{ formCadJg.plataforma }}
+		{{ formCadJg.preco.label }}
+		{{ formCadJg.preco }}
+		<div class="status">
+			{{ formCadJg.status.label }}
+			{{ formCadJg.status }}
+		</div>
+		{{ formCadJg.btn_cadastrar_jogo }}
+		<p>Ir para <a href="{{ url_for('gamezone') }}">Tela Principal</a></p>
+	</form>
+
+	<script src="{{ url_for('static', filename='js/cadastro_jogos.js') }}"></script>
+
+</body>
+</html>
