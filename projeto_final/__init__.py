@@ -12,6 +12,6 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'falha'
-login_manager.login_message = 'Faça um login para poder acessar a página'
+login_manager.login_message = 'Acesso permitido apenas para contas cadastradas e logadas'
 
 from projeto_final import routers

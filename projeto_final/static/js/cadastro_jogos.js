@@ -8,7 +8,7 @@ const removerDiv = () => {
 }
 
 // Define o atraso de 5 segundos e chama a função de remover a div
-setTimeout(removerDiv, 5000);
+setTimeout(removerDiv, 8000);
 
 // Recupera o modo atual do armazenamento local, se disponível
  const isDarkMode = localStorage.getItem("isDarkMode");
@@ -71,4 +71,5 @@ inputs.forEach(input => {
     }
   });
 });
+
 

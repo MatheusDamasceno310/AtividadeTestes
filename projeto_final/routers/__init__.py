@@ -4,6 +4,7 @@ from projeto_final import app, banco, bcrypt
 from projeto_final.models import Conta, Recado, Jogos, Compras
 from flask_login import login_required, logout_user, login_user, current_user
 from datetime import datetime
+import os
 
 usuario = 'admsupremo'
 senha = 'senhafraca'
@@ -13,19 +14,19 @@ def login():
     formLogin = FormLogin()
     if formLogin.validate_on_submit():
             user = Conta.query.filter_by(usuario=formLogin.usuario.data).first()
-            if user and formLogin.usuario.data == usuario and formLogin.senha.data == senha:
-                login_user(user)
-                return redirect(url_for('gamezone'))
-
-            else:
-                if user and bcrypt.check_password_hash(user.senha, formLogin.senha.data):
+            if user:
+                if bcrypt.check_password_hash(user.senha, formLogin.senha.data):
                     login_user(user)
                     flash('Login feito com sucesso', 'sucesso')
                     return redirect(url_for('gamezone'))
 
                 else:
-                    flash('Usuário ou senha incorreto', 'alerta')
-                    return redirect(url_for('login'))
+                    flash('Senha incorreta', 'alerta')
+
+            else:
+                flash('Usuário não cadastrado', 'alerta')
+
+            return redirect(url_for('login'))
 
     return render_template('login.html', formLogin=formLogin)
 
@@ -33,17 +34,40 @@ def login():
 def cadastro():
     formCadastro = FormCadastro()
     if formCadastro.validate_on_submit():
+        user = Conta.query.filter_by(usuario=formCadastro.usuario.data).first()
+        email = Conta.query.filter_by(email=formCadastro.email.data).first()
         try:
-            if formCadastro.senha.data == formCadastro.confirmarSenha.data:
-                criptoSenha = bcrypt.generate_password_hash(formCadastro.senha.data)
-                user = Conta(usuario=formCadastro.usuario.data, email=formCadastro.email.data, telefone=formCadastro.telefone.data, senha=criptoSenha)
-                banco.session.add(user)
-                banco.session.commit()
-                flash('Usuário cadastrado com sucesso', 'sucesso')
-                return redirect(url_for('login'))
+            fUsuario = str(formCadastro.usuario.data).strip()
+            fEmail = str(formCadastro.email.data).strip()
+            fTelefone = str(formCadastro.telefone.data).strip()
+            fSenha = str(formCadastro.senha.data).strip()
+            print(fUsuario)
+            if fUsuario != ' ' and fEmail != ' ' and fTelefone != ' ' and fSenha != ' ':
+                if formCadastro.senha.data == formCadastro.confirmarSenha.data:
+                    if formCadastro.email.data[-10:] == '@gmail.com':
+                        if not user:
+                            if not email:
+                                criptoSenha = bcrypt.generate_password_hash(formCadastro.senha.data)
+                                user = Conta(usuario=formCadastro.usuario.data, email=formCadastro.email.data, telefone=formCadastro.telefone.data, senha=criptoSenha)
+                                banco.session.add(user)
+                                banco.session.commit()
+                                flash('Usuário cadastrado com sucesso', 'sucesso')
+                                return redirect(url_for('login'))
+
+                            else:
+                                flash('Email já existente', 'alerta')
+
+                        else:
+                            flash('Usuário já existente', 'alerta')
+
+                    else:
+                        flash("Tá faltando '@gmail.com' no email", 'alerta')
+
+                else:
+                    flash('Senhas não correspondentes', 'alerta')
 
             else:
-                flash('Usuário ou e-mail já existente', 'alerta')
+                flash('Preencha todos os campos', 'alerta')
 
         except:
             flash('Houve um erro no cadastro', 'alerta')
@@ -59,12 +83,23 @@ def gamezone():
     listaJogos = Jogos.query.all()
     if formRecado.validate_on_submit():
         try:
-            msg = Recado(nomeCompleto=formRecado.nomeCompleto.data, emailRecado=formRecado.emailRecado.data, menssagem=formRecado.menssagem.data)
-            banco.session.add(msg)
-            banco.session.commit()
+            fNome = formRecado.nomeCompleto.data
+            fEmail = formRecado.emailRecado.data
+            fMsg = formRecado.menssagem.data
 
-            flash('Menssagem enviada com sucesso', 'sucesso')
-            return redirect(url_for('gamezone'))
+            if fNome.strip() != '' and fEmail.strip() != '' and fMsg.strip() != '':
+                if formRecado.emailRecado.data[-10:] == '@gmail.com':
+                    msg = Recado(nomeCompleto=formRecado.nomeCompleto.data, emailRecado=formRecado.emailRecado.data, menssagem=formRecado.menssagem.data)
+                    banco.session.add(msg)
+                    banco.session.commit()
+
+                    flash('Menssagem enviada com sucesso', 'sucesso')
+
+                else:
+                    flash("Tá faltando '@gmail.com' no email", 'alerta')
+
+            else:
+                flash('Preencha todos os campos', 'alerta')
 
         except:
             flash('Não foi possível enviar a menssagem', 'alerta')
@@ -95,8 +130,8 @@ def excluir_usuario(id):
         return redirect(url_for('usuarios'))
 
     else:
-        logout_user()
         flash('Acesso restrito', 'falha')
+        logout_user()
         return redirect(url_for('login'))
 
 @app.route('/cadastrar_jogos', methods=['GET', 'POST'])
@@ -106,18 +141,40 @@ def cadastrar_jogos():
         formCadJg = FormCadJg()
         if formCadJg.validate_on_submit():
             try:
-                status = 'Disponivel'
-                CapaDoJogo = "static/imagens/{}".format(formCadJg.capaJogo.data)
-                capaV = Jogos.query.filter_by(capaJogo=formCadJg.capaJogo.data).first()
-                if capaV != formCadJg.capaJogo.data:
-                    if formCadJg.status.data:
-                        status = 'Indisponivel'
+                fCapa = str(formCadJg.capaJogo.data)
+                fNome = str(formCadJg.nomeJogo.data)
+                fPlaraforma = str(formCadJg.plataforma.data)
+                fPreco = str(formCadJg.preco.data)
 
-                    game = Jogos(capaJogo=CapaDoJogo, nomeJogo=formCadJg.nomeJogo.data, plataforma=formCadJg.plataforma.data, preco=formCadJg.preco.data, status=status)
-                    banco.session.add(game)
-                    banco.session.commit()
-                    flash('Jogo cadastrado com sucesso', 'sucesso')
-                    return redirect(url_for('cadastrar_jogos'))
+                status = 'Disponivel'
+                capaDoJogo = "static/imagens/{}".format(formCadJg.capaJogo.data)
+                capaV = Jogos.query.filter_by(capaJogo=formCadJg.capaJogo.data).first()
+                if not capaV:
+                    pasta = os.path.dirname(os.path.abspath(__file__))
+                    pasta = pasta.replace("\\routers", '')
+                    rotaCapa = "static\imagens\{}".format(formCadJg.capaJogo.data)
+                    caminhoFoto = os.path.join(pasta, rotaCapa)
+                    if os.path.exists(caminhoFoto):
+                        if formCadJg.status.data:
+                            status = 'Indisponivel'
+
+                        if fCapa.strip() != '' and fNome.strip() != '' and fPlaraforma.strip() != '' and fPreco.strip() != '':
+                            try:
+                                procoJogo = float(formCadJg.preco.data)
+                                game = Jogos(capaJogo=capaDoJogo, nomeJogo=formCadJg.nomeJogo.data, plataforma=formCadJg.plataforma.data, preco=procoJogo, status=status)
+                                banco.session.add(game)
+                                banco.session.commit()
+                                flash('Jogo cadastrado com sucesso', 'sucesso')
+                                return redirect(url_for('cadastrar_jogos'))
+
+                            except:
+                                flash('Digite o preço como float, exemplo (100.99)', 'alerta')
+
+                        else:
+                            flash('Preencha todos os campos', 'alerta')
+
+                    else:
+                        flash('Capa não está na pasta imagens da aplicação', 'alerta')
 
                 else:
                     flash('Essa capa já está sendo usada', 'alerta')
@@ -130,8 +187,8 @@ def cadastrar_jogos():
         return render_template("cadastro_jogos.html", formCadJg=formCadJg)
 
     else:
-        logout_user()
         flash('Acesso restrito', 'falha')
+        logout_user()
         return redirect(url_for('login'))
 
 @app.route('/comprar_jogo/<int:id>', methods=['POST'])

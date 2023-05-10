@@ -100,7 +100,13 @@
                     <div class="info">
                       <p>Preço<br><span>R$ {{ jogo.preco }}</span></p>
                         <form action="{{ url_for('comprar_jogo', id=jogo.idCadJg) }}" method="POST">
-                            <button type="submit">Comprar</button>
+                            {% if jogo.preco > 0 %}
+                                <button type="submit">Comprar</button>
+
+                            {% else %}
+                                <button type="submit">Obter</button>
+
+                            {% endif %}
                         </form>
                     </div>
                   </div>
@@ -115,7 +121,13 @@
                     <div class="info">
                       <p>Preço<br><span>R$ {{ jogo.preco }}</span></p>
                       <form action="{{ url_for('comprar_jogo', id=jogo.idCadJg) }}" method="POST">
-                        <button type="submit">Comprar</button>
+                        {% if jogo.preco > 0 %}
+                            <button type="submit">Comprar</button>
+
+                        {% else %}
+                            <button type="submit">Obter</button>
+
+                        {% endif %}
                     </form>
                     </div>
                   </div>

@@ -47,11 +47,6 @@ input[type="text"]:hover, input[type="password"]:hover, input[type="email"]:hove
     transform: scale(1.05);
 }
 
-input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="tel"]:focus{
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  transform: scale(1.1);
-}
-
 input[type="text"]:valid, input[type="password"]:valid, input[type="email"]:valid, input[type="tel"]:valid{
     background-color: #c8e6c9;
 }
@@ -115,3 +110,28 @@ li {
     padding: 5px;
     border-radius: 6px;
 }
+
+a {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+ input[type="text"]::-webkit-input-placeholder {
+    text-align: right;
+    padding-right: 15px;
+  }
+
+  input[type="text"]::-moz-placeholder {
+    text-align: right;
+    padding-right: 15px;
+  }
+
+  input[type="text"]:-ms-input-placeholder {
+    text-align: right;
+    padding-right: 15px;
+  }
+
+  input[type="text"]::placeholder {
+    text-align: right;
+    padding-right: 15px;
+  }

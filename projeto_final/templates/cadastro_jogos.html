@@ -15,7 +15,7 @@
 
 		<h1>Cadastro de Jogos</h1>
 		{{ formCadJg.capaJogo.label }}
-		{{ formCadJg.capaJogo(placeholder="Foto tem que ta na pasta imagens") }}
+		{{ formCadJg.capaJogo }}
     	{{ formCadJg.nomeJogo.label }}
 		{{ formCadJg.nomeJogo }}
 		{{ formCadJg.plataforma.label }}
@@ -28,6 +28,7 @@
 		</div>
 		{{ formCadJg.btn_cadastrar_jogo }}
 		<p>Ir para <a href="{{ url_for('gamezone') }}">Tela Principal</a></p>
+
 	</form>
 
 	<script src="{{ url_for('static', filename='js/cadastro_jogos.js') }}"></script>
