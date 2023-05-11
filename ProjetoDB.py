@@ -5,4 +5,3 @@ Criar o banco de dados
 '''
 with app.app_context():
     banco.create_all()
-
