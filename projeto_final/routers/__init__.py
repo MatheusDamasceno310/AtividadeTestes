@@ -149,7 +149,7 @@ def cadastrar_jogos():
 
                 status = 'Disponivel'
                 capaDoJogo = "static/imagens/{}".format(formCadJg.capaJogo.data)
-                capaV = Jogos.query.filter_by(capaJogo=formCadJg.capaJogo.data).first()
+                capaV = Jogos.query.filter_by(capaJogo=capaDoJogo).first()
                 if not capaV:
                     pasta = os.path.dirname(os.path.abspath(__file__))
                     pasta = pasta.replace("\\routers", '')
