@@ -9,7 +9,7 @@ class FormLogin(FlaskForm):
 
 class FormCadastro(FlaskForm):
     usuario = StringField('Usuário', validators=[DataRequired(), length(6)])
-    email = StringField('E-mail', validators=[DataRequired()])
+    email = StringField('E-mail', validators=[DataRequired(), email()])
     telefone = StringField('Telefone', validators=[DataRequired(), length(9, 20)])
     senha = PasswordField('Senha',  validators=[DataRequired(), length(8, 30)])
     confirmarSenha = PasswordField('Confirmar Senha', validators=[DataRequired(), length(8, 30)])

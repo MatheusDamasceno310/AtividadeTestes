@@ -36,13 +36,14 @@ def cadastro():
     if formCadastro.validate_on_submit():
         user = Conta.query.filter_by(usuario=formCadastro.usuario.data).first()
         email = Conta.query.filter_by(email=formCadastro.email.data).first()
+
         try:
             fUsuario = str(formCadastro.usuario.data).strip()
             fEmail = str(formCadastro.email.data).strip()
             fTelefone = str(formCadastro.telefone.data).strip()
             fSenha = str(formCadastro.senha.data).strip()
-            print(fUsuario)
-            if fUsuario != ' ' and fEmail != ' ' and fTelefone != ' ' and fSenha != ' ':
+
+            if fUsuario != '' and fEmail != '' and fTelefone != '' and fSenha != '':
                 if formCadastro.senha.data == formCadastro.confirmarSenha.data:
                     if formCadastro.email.data[-10:] == '@gmail.com':
                         if not user:
@@ -70,7 +71,7 @@ def cadastro():
                 flash('Preencha todos os campos', 'alerta')
 
         except:
-            flash('Houve um erro no cadastro', 'alerta')
+            flash('Houve um erro ao fazer o cadastro', 'alerta')
 
         return redirect(url_for('cadastro'))
 
@@ -194,6 +195,7 @@ def cadastrar_jogos():
 @app.route('/comprar_jogo/<int:id>', methods=['POST'])
 @login_required
 def comprar_jogo(id):
+    flash('Compra realizada com sucesso', 'sucesso')
     game = Jogos.query.get_or_404(id)
     data = datetime.now()
     comprador = current_user.usuario

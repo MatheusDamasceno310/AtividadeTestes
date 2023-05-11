@@ -75,6 +75,7 @@
 
 
     <section class="home">
+        {% include 'mensagem.html' %}
     </section>
     <div style="height: 1000px">
         <!-- just to make scrolling effect possible -->
@@ -90,6 +91,7 @@
         <li class="list" data-filter = "console">Console</li>
       </ul>
       <div class="cardBx">
+
         {% for jogo in listaJogos %}
             {% if jogo.plataforma == 'PC' %}
                 <div class="card" data-item="pc">
@@ -136,7 +138,6 @@
             {% endif %}
         {% endfor %}
 
-
 <!--Contato-->
 
 <div class="contact animated-div2">
@@ -144,8 +145,6 @@
   <form class="form" method="POST">
 
     {{ formRecado.csrf_token }}
-
-    {% include 'mensagem.html' %}
 
     <h1>Fale Conosco</h1>
     <div class="inputBx">
@@ -374,7 +373,8 @@ const removerDiv = () => {
 }
 
 // Define o atraso de 5 segundos e chama a função de remover a div
-setTimeout(removerDiv, 5000);
+setTimeout(removerDiv, 8000);
+
 
 $('.navTrigger').click(function () {
     $(this).toggleClass('active');
