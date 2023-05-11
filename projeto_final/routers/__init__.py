@@ -161,12 +161,16 @@ def cadastrar_jogos():
 
                         if fCapa.strip() != '' and fNome.strip() != '' and fPlaraforma.strip() != '' and fPreco.strip() != '':
                             try:
-                                procoJogo = float(formCadJg.preco.data)
-                                game = Jogos(capaJogo=capaDoJogo, nomeJogo=formCadJg.nomeJogo.data, plataforma=formCadJg.plataforma.data, preco=procoJogo, status=status)
-                                banco.session.add(game)
-                                banco.session.commit()
-                                flash('Jogo cadastrado com sucesso', 'sucesso')
-                                return redirect(url_for('cadastrar_jogos'))
+                                precoJogo = float(formCadJg.preco.data)
+                                if precoJogo >= 0:
+                                    game = Jogos(capaJogo=capaDoJogo, nomeJogo=formCadJg.nomeJogo.data, plataforma=formCadJg.plataforma.data, preco=precoJogo, status=status)
+                                    banco.session.add(game)
+                                    banco.session.commit()
+                                    flash('Jogo cadastrado com sucesso', 'sucesso')
+                                    return redirect(url_for('cadastrar_jogos'))
+
+                                else:
+                                    flash('Valor do jogo não pode ser negativo', 'alerta')
 
                             except:
                                 flash('Digite o preço como float, exemplo (100.99)', 'alerta')
