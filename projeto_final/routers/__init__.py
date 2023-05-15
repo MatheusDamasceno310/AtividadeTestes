@@ -215,7 +215,7 @@ def excluir_jogo(id):
         game = Jogos.query.get_or_404(id)
         banco.session.delete(game)
         banco.session.commit()
-        return redirect(url_for('editar_jogos'))
+        return redirect(url_for('jogos_cadastrados'))
 
     else:
         flash('Acesso restrito', 'falha')
