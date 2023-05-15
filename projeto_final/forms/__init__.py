@@ -10,7 +10,7 @@ class FormLogin(FlaskForm):
 class FormCadastro(FlaskForm):
     usuario = StringField('Usuário', validators=[DataRequired(), length(6)])
     email = StringField('E-mail', validators=[DataRequired(), email()])
-    telefone = IntegerField('Telefone', validators=[DataRequired()])
+    telefone = StringField('Telefone', validators=[DataRequired(), length(9, 20)])
     senha = PasswordField('Senha',  validators=[DataRequired(), length(8, 30)])
     confirmarSenha = PasswordField('Confirmar Senha', validators=[DataRequired(), length(8, 30)])
     btn_cadastrar_usuario = SubmitField('Cadastrar')
@@ -28,3 +28,11 @@ class FormCadJg(FlaskForm):
     preco = StringField('Preço', validators=[DataRequired(), length(2)])
     status = BooleanField('Jogo Indisponivel')
     btn_cadastrar_jogo = SubmitField('Cadastrar')
+
+class FormEditJg(FlaskForm):
+    nvCapa = FileField('Nome da Foto')
+    nvNome = StringField('Nome do Jogo')
+    nvPlataforma = SelectField('Selecione uma plataforma', choices=[('', ''), ('PC', 'PC'), ('Console', 'Console')])
+    nvPreco = StringField('Preço')
+    nvStatus = SelectField('Selecione um status', choices=[('', ''), ('Disponivel', 'Disponivel'), ('Indisponivel', 'Indisponivel')])
+    btn_editar_jogo = SubmitField('Salvar')

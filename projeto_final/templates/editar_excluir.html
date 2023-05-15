@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/editar_excluir.css') }}">
+<link rel="shortcut icon" href="{{ url_for('static', filename='imagens/controle.png') }}" type="image/x-icon">
+<link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+
+<head>
+	<title>Gerenciamento</title>
+</head>
+<body onclick="fecharEdit()">
+	
+  <li><a onclick="toggleDarkMode()"><img id="icon" src="{{ url_for('static', filename='imagens/claro.png') }}" alt="Ícone de alternar entre modos claro e escuro"></a></li>
+  <div class="container">
+    <div class="header">
+      <span>Jogos</span>
+      <a href="{{ url_for('gamezone') }}">Tela Principal</a>
+    </div>
+
+    <div class="divTable">
+      <table>
+        <thead>
+          <tr>
+            <th>Capa</th>
+            <th>Nome</th>
+            <th>Plataforma</th>
+            <th>Preço</th>
+            <th>Status</th>
+            <th class="acao">Editar</th>
+            <th class="acao">Excluir</th>
+          </tr>
+          {% for jogo in listaJogos %}
+            <tr>
+            <th>{{ jogo.capaJogo }}</th>
+            <th>{{ jogo.nomeJogo }}</th>
+            <th>{{ jogo.plataforma }}</th>
+            <th>{{ jogo.preco }}</th>
+            <th>{{ jogo.status }}</th>
+            <td class="acao">
+              <a href="{{ url_for('editar_jogos', id=jogo.idCadJg) }}"><i class='bx bx-edit' ></i></a>
+            </td>
+            <td class="acao">
+              <form action="{{ url_for('excluir_jogo', id=jogo.idCadJg) }}" method="POST">
+                  <button><i class='bx bx-trash'></i></button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</body>
+</html>
+<script>
+  // Recupera o modo atual do armazenamento local, se disponível
+const isDarkMode = localStorage.getItem("isDarkMode");
+
+// Verifica se o modo escuro está habilitado no armazenamento local
+if (isDarkMode === "true") {
+  document.documentElement.classList.add("dark-mode");
+}
+
+// Recupera o ícone atual do armazenamento local, se disponível
+const currentIcon = localStorage.getItem("currentIcon");
+
+// Define o ícone padrão como o ícone claro
+let iconSrc = "{{ url_for('static', filename='imagens/claro.png') }}";
+
+// Verifica se o ícone escuro está selecionado no armazenamento local
+if (currentIcon === "dark") {
+  iconSrc = "{{ url_for('static', filename='imagens/claro.png') }}";
+}
+
+// Define o ícone no HTML
+const icon = document.getElementById("icon");
+icon.setAttribute("src", iconSrc);
+
+function toggleDarkMode() {
+  const html = document.documentElement;
+  html.classList.toggle("dark-mode");
+
+  // Salva o modo atual no armazenamento local
+  const isDarkMode = html.classList.contains("dark-mode");
+  localStorage.setItem("isDarkMode", isDarkMode);
+
+  // Salva o ícone atual no armazenamento local
+  let currentIcon = "light";
+  if (html.classList.contains("dark-mode")) {
+    currentIcon = "dark";
+  }
+  localStorage.setItem("currentIcon", currentIcon);
+
+  // Alterna entre os ícones com animação
+  icon.classList.toggle("animate-icon");
+  setTimeout(() => {
+    if (icon.getAttribute("src") === "{{ url_for('static', filename='imagens/modo-escuro.png') }}") {
+      icon.setAttribute("src", "{{ url_for('static', filename='imagens/claro.png') }}");
+    } else {
+      icon.setAttribute("src", "{{ url_for('static', filename='imagens/modo-escuro.png') }}");
+    }
+    icon.classList.toggle("animate-icon");
+  }, 300);
+}
+
+function fecharEdit() {
+  document.getElementById('edit').style.display='none';
+}
+
+</script>

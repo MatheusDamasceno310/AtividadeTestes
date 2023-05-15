@@ -1,10 +1,12 @@
 from flask import render_template, url_for, redirect, flash
-from projeto_final.forms import FormLogin, FormCadastro, FormRecado, FormCadJg
+from projeto_final.forms import FormLogin, FormCadastro, FormRecado, FormCadJg, FormEditJg
 from projeto_final import app, banco, bcrypt
 from projeto_final.models import Conta, Recado, Jogos, Compras
 from flask_login import login_required, logout_user, login_user, current_user
 from datetime import datetime
 import os
+from editar_jogo import Editar_jogo
+from cadastrar_jogo import Cadastrar_jogo
 
 usuario = 'admsupremo'
 senha = 'senhafraca'
@@ -142,6 +144,7 @@ def cadastrar_jogos():
         formCadJg = FormCadJg()
         if formCadJg.validate_on_submit():
             try:
+
                 fCapa = str(formCadJg.capaJogo.data)
                 fNome = str(formCadJg.nomeJogo.data)
                 fPlaraforma = str(formCadJg.plataforma.data)
@@ -149,40 +152,32 @@ def cadastrar_jogos():
 
                 status = 'Disponivel'
                 capaDoJogo = "static/imagens/{}".format(formCadJg.capaJogo.data)
-                capaV = Jogos.query.filter_by(capaJogo=capaDoJogo).first()
-                if not capaV:
-                    pasta = os.path.dirname(os.path.abspath(__file__))
-                    pasta = pasta.replace("\\routers", '')
-                    rotaCapa = "static\imagens\{}".format(formCadJg.capaJogo.data)
-                    caminhoFoto = os.path.join(pasta, rotaCapa)
-                    if os.path.exists(caminhoFoto):
-                        if formCadJg.status.data:
-                            status = 'Indisponivel'
+                pasta = os.path.dirname(os.path.abspath(__file__))
+                pasta = pasta.replace("\\routers", '')
+                rotaCapa = "static\imagens\{}".format(formCadJg.capaJogo.data)
+                caminhoFoto = os.path.join(pasta, rotaCapa)
+                if os.path.exists(caminhoFoto):
+                    if formCadJg.status.data:
+                        status = 'Indisponivel'
 
-                        if fCapa.strip() != '' and fNome.strip() != '' and fPlaraforma.strip() != '' and fPreco.strip() != '':
-                            try:
-                                precoJogo = float(formCadJg.preco.data)
-                                if precoJogo >= 0:
-                                    game = Jogos(capaJogo=capaDoJogo, nomeJogo=formCadJg.nomeJogo.data, plataforma=formCadJg.plataforma.data, preco=precoJogo, status=status)
-                                    banco.session.add(game)
-                                    banco.session.commit()
-                                    flash('Jogo cadastrado com sucesso', 'sucesso')
-                                    return redirect(url_for('cadastrar_jogos'))
+                    if fCapa.strip() != '' and fNome.strip() != '' and fPlaraforma.strip() != '' and fPreco.strip() != '':
+                        try:
+                            precoJogo = float(formCadJg.preco.data)
+                            if precoJogo >= 0:
+                                Cadastrar_jogo.cadastrar_jogo(capaDoJogo, formCadJg.nomeJogo.data, formCadJg.plataforma.data, precoJogo, status)
+                                return redirect(url_for('cadastrar_jogos'))
 
-                                else:
-                                    flash('Valor do jogo não pode ser negativo', 'alerta')
+                            else:
+                                flash('Valor do jogo não pode ser negativo', 'alerta')
 
-                            except:
-                                flash('Digite o preço como float, exemplo (100.99)', 'alerta')
-
-                        else:
-                            flash('Preencha todos os campos', 'alerta')
+                        except:
+                            flash('Digite o preço como float, exemplo (100.99)', 'alerta')
 
                     else:
-                        flash('Capa não está na pasta imagens da aplicação', 'alerta')
+                        flash('Preencha todos os campos', 'alerta')
 
                 else:
-                    flash('Essa capa já está sendo usada', 'alerta')
+                    flash('Capa não está na pasta imagens da aplicação', 'alerta')
 
             except:
                 flash('Houve um erro no cadastro', 'alerta')
@@ -190,6 +185,75 @@ def cadastrar_jogos():
             return redirect(url_for('cadastrar_jogos'))
 
         return render_template("cadastro_jogos.html", formCadJg=formCadJg)
+
+    else:
+        flash('Acesso restrito', 'falha')
+        logout_user()
+        return redirect(url_for('login'))
+
+@app.route('/jogos_cadastrados', methods=['GET', 'POST'])
+@login_required
+def jogos_cadastrados():
+    if current_user.usuario == usuario:
+        formEditJg = FormEditJg()
+        listaJogos = Jogos.query.all()
+        if formEditJg.validate_on_submit():
+
+            return redirect(url_for('jogos_cadastrados'))
+
+        return render_template("editar_excluir.html", formEditJg=formEditJg, listaJogos=listaJogos)
+
+    else:
+        flash('Acesso restrito', 'falha')
+        logout_user()
+        return redirect(url_for('login'))
+
+@app.route('/excluir_jogo/<int:id>', methods=['POST'])
+@login_required
+def excluir_jogo(id):
+    if current_user.usuario == usuario:
+        game = Jogos.query.get_or_404(id)
+        banco.session.delete(game)
+        banco.session.commit()
+        return redirect(url_for('editar_jogos'))
+
+    else:
+        flash('Acesso restrito', 'falha')
+        logout_user()
+        return redirect(url_for('login'))
+
+@app.route('/editar_jogos/<int:id>', methods=['GET', 'POST'])
+@login_required
+def editar_jogos(id):
+    if current_user.usuario == usuario:
+        formEditJg = FormEditJg()
+        if formEditJg.validate_on_submit():
+            try:
+                pasta = os.path.dirname(os.path.abspath(__file__))
+                pasta = pasta.replace("\\routers", '')
+                rotaCapa = "static\imagens\{}".format(formEditJg.nvCapa.data)
+                caminhoFoto = os.path.join(pasta, rotaCapa)
+                if os.path.exists(caminhoFoto):
+                    capa = Editar_jogo.editar_capa(id, formEditJg.nvCapa.data)
+
+                else:
+                    flash('Capa não está na pasta imagens da aplicação', 'alerta')
+
+                nome = Editar_jogo.editar_nome(id, formEditJg.nvNome.data)
+                preco = Editar_jogo.editar_preco(id, formEditJg.nvPreco.data)
+                plataforma = Editar_jogo.editar_plataforma(id, formEditJg.nvPlataforma.data)
+                status = Editar_jogo.editar_status(id, formEditJg.nvStatus.data)
+
+
+                if capa == 'Atualizado' or nome == 'Atualizado' or preco == 'Atualizado' or plataforma == 'Atualizado' or status == 'Atualizado':
+                    flash('Houve atualização com sucesso', 'sucesso')
+
+            except:
+                flash('Houve um erro na alteração', 'alerta')
+
+            return redirect(url_for('editar_jogos', id=id))
+
+        return render_template("editar_jogo.html", formEditJg=formEditJg)
 
     else:
         flash('Acesso restrito', 'falha')
