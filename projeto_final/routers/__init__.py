@@ -48,20 +48,12 @@ def cadastro():
             if fUsuario != '' and fEmail != '' and fTelefone != '' and fSenha != '':
                 if formCadastro.senha.data == formCadastro.confirmarSenha.data:
                     if formCadastro.email.data[-10:] == '@gmail.com':
-                        if not user:
-                            if not email:
-                                criptoSenha = bcrypt.generate_password_hash(formCadastro.senha.data)
-                                user = Conta(usuario=formCadastro.usuario.data, email=formCadastro.email.data, telefone=formCadastro.telefone.data, senha=criptoSenha)
-                                banco.session.add(user)
-                                banco.session.commit()
-                                flash('Usuário cadastrado com sucesso', 'sucesso')
-                                return redirect(url_for('login'))
-
-                            else:
-                                flash('Email já existente', 'alerta')
-
-                        else:
-                            flash('Usuário já existente', 'alerta')
+                        criptoSenha = bcrypt.generate_password_hash(formCadastro.senha.data)
+                        user = Conta(usuario=formCadastro.usuario.data, email=formCadastro.email.data, telefone=formCadastro.telefone.data, senha=criptoSenha)
+                        banco.session.add(user)
+                        banco.session.commit()
+                        flash('Usuário cadastrado com sucesso', 'sucesso')
+                        return redirect(url_for('login'))
 
                     else:
                         flash("Tá faltando '@gmail.com' no email", 'alerta')
